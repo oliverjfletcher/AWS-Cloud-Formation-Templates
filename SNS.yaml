@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: '2010-09-09'   
+Resources:
+#Create SNS Topic
+  CodeCommitSNSTopic:
+    Type: AWS::SNS::Topic
+    Properties: 
+      DisplayName: CodeCommitSNSTopic
+      TopicName: CodeCommitSNSTopic
+#Create SNS Subscription
+  CodeCommitSNSSubscription:
+    Type: "AWS::SNS::Subscription"
+    DependsOn: CodeCommitSNSTopic
+    Properties:
+      Endpoint: oliverjamesfletcher@gmail.com
+      Protocol: email
+      TopicArn: !Ref CodeCommitSNSTopic
+#Export 
+Outputs:
+  CodeCommitSNSTopicARN:
+    Description: The ARN export for SNS Topic
+    Value: !Ref CodeCommitSNSTopic
+    Export:
+      Name: !Sub "${AWS::StackName}CodeCommitSNSTopicARN"

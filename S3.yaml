@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+    This template provisions S3 buckets to store S3 logs, and Wordpress content & code
+Resources:
+#Provision S3 Bucket for storing S3 bucket Logs
+  S3BucketLogs:
+    Type: AWS::S3::Bucket
+    Properties: 
+      AccessControl: LogDeliveryWrite
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      BucketName: oliverjamesfletcher-cf-s3-logs
+      LifecycleConfiguration:
+        Rules:
+        - Status: Disabled
+          Transitions:
+            - StorageClass: Glacier
+              TransitionInDays: 90
+#Provision S3 Bucket for storing static Wordpress content
+  S3BucketWPContent: 
+    Type: AWS::S3::Bucket
+    DependsOn: S3BucketLogs
+    Properties: 
+      AccessControl: PublicRead
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      BucketName: oliverjamesfletcher-cf-wp-content
+      LifecycleConfiguration:
+        Rules:
+        - Status: Disabled
+          Transitions:
+            - StorageClass: Glacier
+              TransitionInDays: 90
+      LoggingConfiguration: 
+        DestinationBucketName: oliverjamesfletcher-cf-s3-logs
+#Provision S3 Bucket for storing static Wordpress code
+  S3BucketWPCode:
+    Type: AWS::S3::Bucket
+    DependsOn: S3BucketLogs
+    Properties: 
+      AccessControl: BucketOwnerFullControl
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      BucketName: oliverjamesfletcher-cf-wp-code
+      LifecycleConfiguration:
+        Rules:
+        - Status: Disabled
+          Transitions:
+            - StorageClass: Glacier
+              TransitionInDays: 90
+      LoggingConfiguration: 
+        DestinationBucketName: !Ref S3BucketLogs

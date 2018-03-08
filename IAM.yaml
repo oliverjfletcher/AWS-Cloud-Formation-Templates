@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:  
+#Create EC2 S3 Read-Write Role
+  IAMRoleEC2S3ReadWrite:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "ec2.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      RoleName: EC2-S3-Read-Write
+#Create EC2 S3 Read-Write ManagedPolicy
+  IAMManagedPolicyEC2S3ReadWrite:
+    Type: "AWS::IAM::ManagedPolicy"
+    Properties: 
+      Description: EC2 S3 Managed Read-Write Policy
+      Path: /
+      PolicyDocument:        
+        Version: "2012-10-17"
+        Statement:
+          -
+           Effect: "Allow"
+           Action:
+           - s3:PutObject
+           - s3:GetObject
+           - s3:DeleteObject
+           - s3:RestoreObject
+           - s3:ListBucket
+           - s3:ListObjects
+           Resource: "arn:aws:s3:::oliverjamesfletcher-cf-wp-content"
+      Roles:
+      - Ref: IAMRoleEC2S3ReadWrite
+      ManagedPolicyName: IAMManagedPolicyEC2S3ReadWrite
+#Create EC2 S3 Read-Write Instance Profile
+  IAMInstProfileEC2S3ReadWrite:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+      - Ref: IAMRoleEC2S3ReadWrite
+      InstanceProfileName: EC2-S3-Read-Write
+#Export IAM Instance Profile to be used in ECS Stack and passed in as parameters
+Outputs:
+  IAMInstProfileEC2S3ReadWrite:
+    Description: The name of the IAM Instance Profile
+    Value: !Ref IAMInstProfileEC2S3ReadWrite
+    Export:
+      Name: !Sub "${AWS::StackName}IAMInstanceProfileName"

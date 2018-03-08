@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: '2010-09-09'   
+Description: >
+    This template deploys two EC2 instances for bastion servers 
+Parameters:
+#Create drop down list when creating stack to select Security Group
+    BastionSG:
+        Type: AWS::EC2::SecurityGroup::Id
+        Default:  BastionSG
+        Description: Select AUWEBBASTIONSG Security Group to use for the EC2 instances
+#Create drop down list when creating stack to select Security Group
+    BastionSG:
+        Type: AWS::EC2::SecurityGroup::Id
+        Default:  BastionSG
+        Description: Select AUWEBBASTIONSG Security Group to use for the EC2 instances
+#Set Stack name to import name value for Networking
+    NetworkStackName: 
+        Type: String
+        Default: CloudFormationTesting000
+        Description: Enter CloudFormationTesting000 Stack to ECR Repo name
+#Set Stack name to import name value for ECR
+    ECRStackName: 
+        Type: String
+        Default: CloudFormationTesting001
+        Description: Enter CloudFormationTesting001 Stack to ECR Repo name
+Resources:
+#Provision EC2 Bastion Instance 0
+ EC2Bastion0:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      AvailabilityZone: ap-southeast-2a
+      ImageId: ami-942dd1f6
+      InstanceType: t2.micro
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "BastionSG"
+          SubnetId: 
+            Fn::ImportValue: !Sub "${NetworkStackName}BastionSubnet0Id"
+      KeyName: EC2_SSH
+      Tags:
+      - Key: Name 
+        Value: AUSYDPVMBAS0000
+      UserData: !Base64 |
+             #!/bin/bash
+             yum update -y
+#Provision EC2 Bastion Instance 1 - Used to create ECS Docker image
+ EC2Bastion1:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      AvailabilityZone: ap-southeast-2b
+      ImageId: ami-942dd1f6
+      InstanceType: t2.micro
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet:
+            - Ref: "BastionSG"
+          SubnetId: 
+            Fn::ImportValue: !Sub "${NetworkStackName}BastionSubnet1Id"
+      KeyName: EC2_SSH
+      Tags:
+      - Key: Name 
+        Value: AUSYDPVMBAS0001 
+      UserData:
+        Fn::Base64:
+          Fn::Sub:
+            - |
+              #!/bin/bash
+              yum update -y
+              yum install -y docker
+              service docker start
+              usermod -a -G docker ec2-user
+              mkdir ecs-docker-image
+              cd ecs-docker-image
+              wget https://s3-ap-southeast-2.amazonaws.com/oliverjamesfletcher-docker/Docker-file
+              eval $(aws ecr get-login --region ap-southeast-2 --no-include-email)
+              docker build -t ECS:wordpress - < Docker-file
+              $awsecrarn=$(aws ecr describe-repositories | awk '/oliverjamesfletcher/ {print$2;}' | grep dkr.ecr.ap | tr -d \")
+              docker tag ${ECRNameImport}:Build000 $awsecrarn:Build000
+              docker push $awsecrrepoarn:TAG
+            - ECRNameImport: 
+                Fn::ImportValue: "ECRName"

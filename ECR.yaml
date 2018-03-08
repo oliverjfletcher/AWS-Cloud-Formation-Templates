@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+    This template provisions a Elastic Compute Repository
+Parameters:
+  IAMUserARN:
+    Type: String
+    Description: >-
+      Use the full ARN for the IAM user (e.g.
+      arn:aws:iam::12345:user/oliverfletcher)
+Resources:
+  ECR:
+    Type: 'AWS::ECR::Repository'
+    Properties:
+      RepositoryPolicyText:
+        Version: 2008-10-17
+        Statement:
+          - Sid: AllowPushPull
+            Effect: Allow
+            Principal:
+              AWS:
+                - !Ref IAMUserARN
+            Action:
+              - 'ecr:GetDownloadUrlForLayer'
+              - 'ecr:BatchGetImage'
+              - 'ecr:BatchCheckLayerAvailability'
+              - 'ecr:PutImage'
+              - 'ecr:InitiateLayerUpload'
+              - 'ecr:UploadLayerPart'
+              - 'ecr:CompleteLayerUpload'
+#Export ECR tag to use in Docker build
+Outputs:
+  ECRName:
+    Value: !Ref ECR
+    Export:
+      Name: "ECRName"

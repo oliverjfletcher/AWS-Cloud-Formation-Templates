@@ -1,0 +1,332 @@
+AWSTemplateFormatVersion: '2010-09-09'   
+Resources:
+#Provision VPC, with 10.0.0./16 CIDR and enable DNS support and DNS Hostname support
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value: AUSYDVPC000
+#Provision Internet Gateway
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: AUSYDIGW000
+#Attach Internet Gateway to VPC
+  AttachInternetGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+     VpcId: !Ref VPC
+     InternetGatewayId: !Ref InternetGateway
+#Provision Subnets & assign to VPC
+#Provision Bastion 0 Tier Subnet for 11 Hosts
+  BastionSubnet0:
+   Type: AWS::EC2::Subnet
+   Properties:
+    AvailabilityZone: ap-southeast-2a
+    VpcId: !Ref VPC
+    CidrBlock: 10.0.48.0/28
+    MapPublicIpOnLaunch: true
+    Tags: 
+    - Key: Name 
+      Value: AUSYDSUBBAS000
+#Provision Bastion 1 Tier Subnet for 11 Hosts
+  BastionSubnet1:
+   Type: AWS::EC2::Subnet
+   Properties:
+    AvailabilityZone: ap-southeast-2b
+    VpcId: !Ref VPC
+    CidrBlock: 10.0.48.16/28
+    MapPublicIpOnLaunch: true
+    Tags: 
+    - Key: Name 
+      Value: AUSYDSUBBAS001
+#Provision Web Tier 0 Subnet for 2042 Hosts
+  WebTierSubnet0:
+   Type: AWS::EC2::Subnet
+   Properties:
+    AvailabilityZone: ap-southeast-2a
+    VpcId: !Ref VPC
+    CidrBlock: 10.0.0.0/21
+    MapPublicIpOnLaunch: true
+    Tags: 
+    - Key: Name 
+      Value: AUSYDSUBWEB000
+#Provision Web Tier 1 Subnet for 2042 Hosts
+  WebTierSubnet1:
+   Type: AWS::EC2::Subnet
+   Properties:
+    AvailabilityZone: ap-southeast-2b
+    VpcId: !Ref VPC
+    CidrBlock: 10.0.8.0/21
+    MapPublicIpOnLaunch: true
+    Tags: 
+    - Key: Name 
+      Value: AUSYDSUBWEB001      
+#Provision App 0 Tier Subnet for 2043 Hosts
+  AppTierSubnet0:
+   Type: AWS::EC2::Subnet
+   Properties:
+    AvailabilityZone: ap-southeast-2a
+    VpcId: !Ref VPC
+    CidrBlock: 10.0.16.0/21
+    MapPublicIpOnLaunch: true
+    Tags: 
+    - Key: Name 
+      Value: AUSYDSUBAPP000
+#Provision App 1 Tier Subnet for 2043 Hosts
+  AppTierSubnet1:
+   Type: AWS::EC2::Subnet
+   Properties:
+    AvailabilityZone: ap-southeast-2b
+    VpcId: !Ref VPC
+    CidrBlock: 10.0.24.0/21
+    MapPublicIpOnLaunch: true
+    Tags: 
+    - Key: Name 
+      Value: AUSYDSUBAPP001
+#Provision DB Tier 0 Subnet for 2043 Hosts
+  DBTierSubnet0:
+   Type: AWS::EC2::Subnet
+   Properties:
+    AvailabilityZone: ap-southeast-2a
+    VpcId: !Ref VPC
+    CidrBlock: 10.0.32.0/21
+    MapPublicIpOnLaunch: true
+    Tags: 
+    - Key: Name 
+      Value: AUSYDSUBDB000
+#Provision DB Tier 1 Subnet for 2043 Hosts
+  DBTierSubnet1:
+   Type: AWS::EC2::Subnet
+   Properties:
+    AvailabilityZone: ap-southeast-2b
+    VpcId: !Ref VPC
+    CidrBlock: 10.0.40.0/21
+    MapPublicIpOnLaunch: true
+    Tags: 
+    - Key: Name 
+      Value: AUSYDSUBDB001      
+#Provision NAT Gateway 0 and attach EIP
+  NATGateway0EIP:
+   Type: "AWS::EC2::EIP"
+   Properties:
+     Domain: VPC
+  NATGateway0:
+   Type: AWS::EC2::NatGateway
+   DependsOn: AttachInternetGateway
+   Properties:
+    AllocationId:
+     Fn::GetAtt:
+     - NATGateway0EIP
+     - AllocationId
+    SubnetId: !Ref WebTierSubnet0
+    Tags: 
+    - Key: Name 
+      Value: AUSYDNATGW000
+#Provision NAT Gateway 1 and attach EIP
+  NATGateway1EIP:
+   Type: "AWS::EC2::EIP"
+   Properties:
+     Domain: VPC
+  NATGateway1:
+   Type: AWS::EC2::NatGateway
+   DependsOn: AttachInternetGateway
+   Properties:
+    AllocationId:
+     Fn::GetAtt:
+     - NATGateway1EIP
+     - AllocationId
+    SubnetId: !Ref WebTierSubnet1
+    Tags: 
+    - Key: Name 
+      Value: AUSYDNATGW001
+#Provision Routing Table for Web Tier and Bastion to Internet Gateway
+  RoutingTableInternetGateway:
+   Type: AWS::EC2::RouteTable
+   Properties:
+    VpcId: !Ref VPC
+  InternetGatewayRoute:
+   Type: AWS::EC2::Route
+   DependsOn: InternetGateway
+   Properties:
+    DestinationCidrBlock: 0.0.0.0/0
+    GatewayId: !Ref InternetGateway
+    RouteTableId: !Ref RoutingTableInternetGateway
+  Bastion0InternetGatewayRoute:
+   Type: AWS::EC2::SubnetRouteTableAssociation
+   Properties:
+    RouteTableId: !Ref RoutingTableInternetGateway
+    SubnetId: !Ref BastionSubnet0
+  WebTier0InternetGatewayRoute:
+   Type: AWS::EC2::SubnetRouteTableAssociation
+   Properties:
+    RouteTableId: !Ref RoutingTableInternetGateway
+    SubnetId: !Ref WebTierSubnet0
+  Bastion1InternetGatewayRoute:
+   Type: AWS::EC2::SubnetRouteTableAssociation
+   Properties:
+    RouteTableId: !Ref RoutingTableInternetGateway
+    SubnetId: !Ref BastionSubnet1
+  WebTier1InternetGatewayRoute:
+   Type: AWS::EC2::SubnetRouteTableAssociation
+   Properties:
+    RouteTableId: !Ref RoutingTableInternetGateway
+    SubnetId: !Ref WebTierSubnet1
+#Provision Routing Table for App Tier & DB Tier to NAT Gateway
+  RoutingTableNATGateway:
+   Type: AWS::EC2::RouteTable
+   Properties:
+    VpcId: !Ref VPC
+  InternetRoute0:
+   Type: AWS::EC2::Route
+   DependsOn: NATGateway0
+   Properties:
+    DestinationCidrBlock: 0.0.0.0/0
+    NatGatewayId: !Ref NATGateway0
+    RouteTableId: !Ref RoutingTableNATGateway    
+  AppTier0NATGetwayRoute:
+   Type: AWS::EC2::SubnetRouteTableAssociation
+   Properties:
+    RouteTableId: !Ref RoutingTableNATGateway 
+    SubnetId: !Ref AppTierSubnet0
+  DBTier0NATGetwayRoute:
+   Type: AWS::EC2::SubnetRouteTableAssociation
+   Properties:
+    RouteTableId: !Ref RoutingTableNATGateway 
+    SubnetId: !Ref DBTierSubnet0
+  AppTier1NATGetwayRoute:
+   Type: AWS::EC2::SubnetRouteTableAssociation
+   Properties:
+    RouteTableId: !Ref RoutingTableNATGateway 
+    SubnetId: !Ref AppTierSubnet1
+  DBTier1NATGetwayRoute:
+   Type: AWS::EC2::SubnetRouteTableAssociation
+   Properties:
+    RouteTableId: !Ref RoutingTableNATGateway 
+    SubnetId: !Ref DBTierSubnet1
+#Provision Bastion Security Group
+  BastionSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: AUWEBBASTIONSG
+      GroupDescription: Bastion Security Group
+      VpcId: !Ref VPC
+      Tags: 
+        - Key: Name 
+          Value: AUSYDBASSG000
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        IpProtocol: "-1"
+        CidrIp: 0.0.0.0/0
+#Provision WebTier Security Group
+  WebTierSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: AUWEBTIERSG
+      GroupDescription: WebTier Security Group
+      VpcId: !Ref VPC
+      Tags: 
+        - Key: Name 
+          Value: AUSYDWEBSG000
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 10.0.12.0/28
+      SecurityGroupEgress:
+        IpProtocol: "-1"
+        CidrIp: 0.0.0.0/0    
+#Provision AppTier Security Group
+  AppTierSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: AUAPPTIERSG
+      GroupDescription: AppTier Security Group
+      VpcId: !Ref VPC
+      Tags: 
+        - Key: Name 
+          Value: AUSYDAPPSG000
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 10.0.0.0/22
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: 10.0.0.0/22
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 10.0.12.0/28
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 10.0.8.0/22
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: 10.0.8.0/22
+      - IpProtocol: tcp
+        FromPort: '3306'
+        ToPort: '3306'
+        CidrIp: 10.0.0.0/22 
+#Provision DBTier Security Group
+  DBTierSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: AUDBTIERSG
+      GroupDescription: DBTier Security Group
+      VpcId: !Ref VPC
+      Tags: 
+        - Key: Name 
+          Value: AUSYDDBSG000
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 10.0.8.0/22
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: 10.0.8.0/22
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 10.0.12.0/28
+#Export Bastion Subnet IDs to be used in EC2 Stack
+Outputs:
+  BastionSubnet0:
+    Description: The ID of the Bastion Subnet
+    Value: !Ref BastionSubnet0
+    Export:
+      Name: !Sub "${AWS::StackName}BastionSubnet0Id"
+  BastionSubnet1:
+    Description: The ID of the Bastion Subnet
+    Value: !Ref BastionSubnet1
+    Export:
+      Name: !Sub "${AWS::StackName}BastionSubnet1Id"
