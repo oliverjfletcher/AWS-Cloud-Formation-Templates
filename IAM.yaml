@@ -1,32 +1,34 @@
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+    This template creates IAM Roles, Managed Polcies, and Instance Profile
 Resources:  
 #Create EC2 S3 Read-Write Role
-  IAMRoleEC2S3ReadWrite:
+  IAMRoleEC2CF:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           -
-            Effect: "Allow"
+            Effect: Allow
             Principal:
               Service:
-                - "ec2.amazonaws.com"
+                - ec2.amazonaws.com
             Action:
-              - "sts:AssumeRole"
-      Path: "/"
-      RoleName: EC2-S3-Read-Write
-#Create EC2 S3 Read-Write ManagedPolicy
-  IAMManagedPolicyEC2S3ReadWrite:
-    Type: "AWS::IAM::ManagedPolicy"
+              - sts:AssumeRole
+      Path: /
+      RoleName: EC2
+#Create EC2 S3 Read-Write Managed Policy
+  IAMManagedPolicyEC2S3WPContentReadWrite:
+    Type: AWS::IAM::ManagedPolicy
     Properties: 
       Description: EC2 S3 Managed Read-Write Policy
       Path: /
       PolicyDocument:        
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           -
-           Effect: "Allow"
+           Effect: Allow
            Action:
            - s3:PutObject
            - s3:GetObject
@@ -34,22 +36,43 @@ Resources:
            - s3:RestoreObject
            - s3:ListBucket
            - s3:ListObjects
-           Resource: "arn:aws:s3:::oliverjamesfletcher-cf-wp-content"
+           Resource: arn:aws:s3:::oliverjamesfletcher-cf-wp
       Roles:
-      - Ref: IAMRoleEC2S3ReadWrite
-      ManagedPolicyName: IAMManagedPolicyEC2S3ReadWrite
+      - Ref: IAMRoleEC2CF
+      ManagedPolicyName: IAMManagedPolicyEC2S3WPContentReadWrite
+#Create IAM EC2 ECR Read-Write Managed Policy
+  IAMManagedPolicyEC2ECRCF:
+    Type: AWS::IAM::ManagedPolicy
+    Properties: 
+      Description: EC2 ECR Managed Policy
+      Path: /
+      PolicyDocument:        
+        Version: 2012-10-17
+        Statement:
+          -
+           Effect: Allow
+           Action: ecr:*
+           Resource: "*"
+      Roles:
+      - Ref: IAMRoleEC2CF
+      ManagedPolicyName: IAMManagedPolicyEC2ECRCF
 #Create EC2 S3 Read-Write Instance Profile
   IAMInstProfileEC2S3ReadWrite:
     Type: AWS::IAM::InstanceProfile
     Properties:
-      Path: "/"
+      Path: /
       Roles:
-      - Ref: IAMRoleEC2S3ReadWrite
-      InstanceProfileName: EC2-S3-Read-Write
+      - Ref: IAMRoleEC2CF
+      InstanceProfileName: EC2-CF-Read-Write
 #Export IAM Instance Profile to be used in ECS Stack and passed in as parameters
 Outputs:
-  IAMInstProfileEC2S3ReadWrite:
+  IAMInstProfileEC2S3WPContentReadWrite:
     Description: The name of the IAM Instance Profile
-    Value: !Ref IAMInstProfileEC2S3ReadWrite
+    Value: !Ref IAMManagedPolicyEC2S3WPContentReadWrite
     Export:
-      Name: !Sub "${AWS::StackName}IAMInstanceProfileName"
+      Name: !Sub ${AWS::StackName}IAMInstanceProfileS3Name
+  IAMInstProfileEC2ECRReadWrite:
+    Description: The name of the IAM Instance Profile
+    Value: !Ref IAMManagedPolicyEC2ECRCF
+    Export:
+      Name: !Sub ${AWS::StackName}IAMInstanceProfileECRName

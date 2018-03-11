@@ -1,4 +1,6 @@
-AWSTemplateFormatVersion: '2010-09-09'   
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+    This template deploys VPC, Internet Gateway, Subnets, NAT Gateways, and Security Groups   
 Resources:
 #Provision VPC, with 10.0.0./16 CIDR and enable DNS support and DNS Hostname support
   VPC:

@@ -16,12 +16,12 @@ Parameters:
     NetworkStackName: 
         Type: String
         Default: CloudFormationTesting000
-        Description: Enter CloudFormationTesting000 Stack to ECR Repo name
+        Description: Enter CloudFormationTesting000 Stack for SubnetIds
 #Set Stack name to import name value for ECR
     ECRStackName: 
         Type: String
         Default: CloudFormationTesting001
-        Description: Enter CloudFormationTesting001 Stack to ECR Repo name
+        Description: Enter CloudFormationTesting001 Stack for ECR Repo name
 Resources:
 #Provision EC2 Bastion Instance 0
  EC2Bastion0:
@@ -30,13 +30,14 @@ Resources:
       AvailabilityZone: ap-southeast-2a
       ImageId: ami-942dd1f6
       InstanceType: t2.micro
+      IamInstanceProfile: EC2-CF-Read-Write
       NetworkInterfaces: 
         - AssociatePublicIpAddress: "true"
           DeviceIndex: "0"
           GroupSet: 
             - Ref: "BastionSG"
           SubnetId: 
-            Fn::ImportValue: !Sub "${NetworkStackName}BastionSubnet0Id"
+            Fn::ImportValue: !Sub ${NetworkStackName}BastionSubnet0Id
       KeyName: EC2_SSH
       Tags:
       - Key: Name 
@@ -51,13 +52,14 @@ Resources:
       AvailabilityZone: ap-southeast-2b
       ImageId: ami-942dd1f6
       InstanceType: t2.micro
+      IamInstanceProfile: EC2-CF-Read-Write
       NetworkInterfaces: 
         - AssociatePublicIpAddress: "true"
           DeviceIndex: "0"
           GroupSet:
             - Ref: "BastionSG"
           SubnetId: 
-            Fn::ImportValue: !Sub "${NetworkStackName}BastionSubnet1Id"
+            Fn::ImportValue: !Sub ${NetworkStackName}BastionSubnet1Id
       KeyName: EC2_SSH
       Tags:
       - Key: Name 
@@ -71,13 +73,16 @@ Resources:
               yum install -y docker
               service docker start
               usermod -a -G docker ec2-user
+              cd /home/ec2-user/
               mkdir ecs-docker-image
-              cd ecs-docker-image
+              cd ecs-docker-image/
               wget https://s3-ap-southeast-2.amazonaws.com/oliverjamesfletcher-docker/Docker-file
               eval $(aws ecr get-login --region ap-southeast-2 --no-include-email)
-              docker build -t ECS:wordpress - < Docker-file
-              $awsecrarn=$(aws ecr describe-repositories | awk '/oliverjamesfletcher/ {print$2;}' | grep dkr.ecr.ap | tr -d \")
-              docker tag ${ECRNameImport}:Build000 $awsecrarn:Build000
-              docker push $awsecrrepoarn:TAG
-            - ECRNameImport: 
+              docker build -t ${ECRNameImport}:Build000 - < Docker-file
+              docker tag ${ECRNameImport}:Build000 ${ECRURIImport}:Build000
+              docker push ${ECRURIImport}:Build000
+            - 
+              ECRNameImport: 
                 Fn::ImportValue: "ECRName"
+              ECRURIImport: 
+                Fn::ImportValue: "ECRURI"
