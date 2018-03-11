@@ -1,4 +1,6 @@
-AWSTemplateFormatVersion: '2010-09-09'   
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+    This template creates a SNS Topic and Subscription for CodeCommit
 Resources:
 #Create SNS Topic
   CodeCommitSNSTopic:
@@ -20,4 +22,4 @@ Outputs:
     Description: The ARN export for SNS Topic
     Value: !Ref CodeCommitSNSTopic
     Export:
-      Name: !Sub "${AWS::StackName}CodeCommitSNSTopicARN"
+      Name: CodeCommitSNSTopicARN

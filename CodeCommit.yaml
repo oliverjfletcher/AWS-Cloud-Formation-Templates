@@ -1,12 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'   
 Description: >
     This template provisions a CloudCommit repository
-Parameters:
-#Set Stack name to import values for subnetid
-    StackName: 
-        Type: String
-        Default: CloudFormationTesting004
-        Description: Enter CloudFormationTesting004 Stack to import SNS ARN
 Resources:        
 #CodeCommit Repository
   ECSCodeCommitRepo:
@@ -17,7 +11,7 @@ Resources:
       Triggers: 
         - Name: MasterTriggers
           DestinationArn: 
-            Fn::ImportValue: !Sub "${StackName}CodeCommitSNSTopicARN"
+            Fn::ImportValue: CodeCommitSNSTopicARN
           Branches: 
           - master
           Events:

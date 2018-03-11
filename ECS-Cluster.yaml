@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'   
+Description: >
+    This template deploys ECS Cluster and defines ECS Service, Task Defintion, Auto Scaling and a ELB    
+Resources:
+#Create ECS Cluster
+    ECSCluster:
+        Type: AWS::ECS::Cluster
+        Properties:
+            ClusterName: AUSYDECSCLUS000
+#Create ECS Service Definition 
+    ECSService:
+        Type: AWS::ECS::Service
+        Properties:
+          Cluster: Ref! ECSCluster
+          DesiredCount: 4
+          Deployment Cofiguration:
+            Maximum Percent: 100
+            MinimumHealthyPercent: 50
+          LoadBalancers:
+              ContainerName: Wordpress
+              ContainerPort: 80
+              LoadBalancerName: !Ref ECSELB
+          Role: !Ref ECSServiceIAMRole
+          Task Defintion: !Ref ECSTaskDefinition
+#Create ECS Task Defintion
+    ECSTaskDefinition:
+        Type: AWS::ECS::TaskDefinition
+        Properties:
+          ContainerDefinitions:
+            Name: Wordpress
+            Essential: True
+            Image: !Join [ ".", [ !Ref "AWS::AccountId", "dkr.ecr", !Ref "AWS::Region", !Join [ "/", [ "amazonaws.com", !Ref ECRName, :WordpressBuild000 ] ] ] ]
+
