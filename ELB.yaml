@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'   
+Description: >
+    This template deploys Application Load Balancer
+Resources:
+#Provision ELB ALB
+  ApplicationLoadBalancer: 
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internet-facing
+      Subnets:
+        Fn::ImportValue: AppTierSubnet0Id
+        Fn::ImportValue: AppTierSubnet1Id
+      LoadBalancerAttributes:
+      - Key: idle_timeout.timeout_seconds
+        Value: 60
+      SecurityGroups:
+        Fn::ImportValue: ALBWebTierSG
+      Tags:
+      - Key: Name
+        Value: AUSYDELBALB000
+  ApplicationLoadBalancerTG: 
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPath: /var/www/html/healthy.html
+      HealthCheckTimeoutSeconds: 5
+      Name: AUSYDELBALBTG000
+      Port: 80
+      Protocol: HTTP
+      UnhealthyThresholdCount: 5
+      VpcId:
+      	Fn::ImportValue: VPCId
