@@ -45,10 +45,11 @@ Resources:
           LoadBalancers:
               ContainerName: Wordpress
               ContainerPort: 80
-              LoadBalancerName: !Ref ECSELB
-          Role: !Ref ECSServiceIAMRole
-          Task Defintion: 
-            Fn::ImportValue: ECSTaskDefinition
+              LoadBalancerName: 
+                Fn::ImportValue: ApplicationLoadBalancerId
+          Role: 
+            Fn::ImportValue: IAM-EC2-ECS-Service-CF
+          Task Defintion: !Ref ECSTaskDefinition
 #Create ECS Task Defintion
     ECSTaskDefinition:
         Type: AWS::ECS::TaskDefinition
@@ -58,8 +59,10 @@ Resources:
             Essential: True
             Image: !Join [ ".", [ !Ref "AWS::AccountId", "dkr.ecr", !Ref "AWS::Region", !Join [ "/", [ "amazonaws.com", !Ref ECRName, :WordpressBuild000 ] ] ] ]
             PortMappings:
-              HostPort: 80
+              HostPort: 0
               ContainerPort: 80
+              HostPort: 0
+              ContainerPort: 443
           Volumes:
             Name: ECSVolume000
 #Create Auto Scaling Group for ECS Cluster
@@ -135,10 +138,3 @@ Resources:
                   01_configure_wordpress:
                   command: /tmp/create-wp-config
                   cwd: /var/www/html/wordpress
-
-
-
-
-
-
-

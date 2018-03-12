@@ -142,3 +142,8 @@ Outputs:
     Value: !Ref IAMInstProfileEC2ReadWrite
     Export:
       Name: IAM-EC2-CF-Read-Write
+  IAMRoleEC2CF1:
+    Description: The name of the IAM EC2 ECS Service Role
+    Value: !Ref IAMRoleEC2CF1
+    Export:
+      Name: IAM-EC2-ECS-Service-CF

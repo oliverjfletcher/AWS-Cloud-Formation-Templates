@@ -16,3 +16,10 @@ Resources:
           - master
           Events:
           - all
+#Export CodeCommit 
+Outputs:
+  ECSCodeCommitRepo:
+    Description: The ID of the CodeCommit Repository
+    Value: !Ref ECSCodeCommitRepo
+    Export:
+      Name: ECSCodeCommitRepoId

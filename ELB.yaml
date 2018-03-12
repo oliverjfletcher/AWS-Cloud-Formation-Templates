@@ -22,11 +22,20 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       HealthCheckIntervalSeconds: 30
-      HealthCheckPath: /var/www/html/healthy.html
+      HealthCheckPath: /healthy.html
       HealthCheckTimeoutSeconds: 5
+      Matcher:
+        HttpCode: 200
       Name: AUSYDELBALBTG000
-      Port: 80
-      Protocol: HTTP
+      Port: 443
+      Protocol: HTTPS
       UnhealthyThresholdCount: 5
       VpcId:
       	Fn::ImportValue: VPCId
+#Export Application Load Balancer Id
+Outputs:
+  ApplicationLoadBalancerId:
+    Description: The ID of the ApplicationLoadBalancer
+    Value: !Ref ApplicationLoadBalancer
+    Export:
+      Name: ApplicationLoadBalancerId

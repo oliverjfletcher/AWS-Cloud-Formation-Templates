@@ -275,7 +275,7 @@ Resources:
       - IpProtocol: tcp
         FromPort: '80'
         ToPort: '80'
-        CidrIp: 10.0.0.0/22
+        SourceSecurityGroupId: !Ref WebTierSG
       - IpProtocol: tcp
         FromPort: '443'
         ToPort: '443'
@@ -283,7 +283,7 @@ Resources:
       - IpProtocol: tcp
         FromPort: '22'
         ToPort: '22'
-        CidrIp: 10.0.12.0/28
+        SourceSecurityGroupId: !Ref BastionSG
       SecurityGroupEgress:
       - IpProtocol: tcp
         FromPort: '80'
@@ -292,11 +292,11 @@ Resources:
       - IpProtocol: tcp
         FromPort: '443'
         ToPort: '443'
-        CidrIp: 10.0.8.0/22
+        SourceSecurityGroupId: !Ref DBTierSG
       - IpProtocol: tcp
         FromPort: '3306'
         ToPort: '3306'
-        CidrIp: 10.0.0.0/22 
+        SourceSecurityGroupId: !Ref DBTierSG
 #Provision DBTier Security Group
   DBTierSG:
     Type: AWS::EC2::SecurityGroup
@@ -311,15 +311,23 @@ Resources:
       - IpProtocol: tcp
         FromPort: '80'
         ToPort: '80'
-        CidrIp: 10.0.8.0/22
+        SourceSecurityGroupId: !Ref AppTierSG
       - IpProtocol: tcp
         FromPort: '443'
         ToPort: '443'
-        CidrIp: 10.0.8.0/22
+        SourceSecurityGroupId: !Ref AppTierSG
+      - IpProtocol: tcp
+        FromPort: '3306'
+        ToPort: '3306'
+        SourceSecurityGroupId: !Ref AppTierSG
+      - IpProtocol: tcp
+        FromPort: '11211'
+        ToPort: '11211'
+        SourceSecurityGroupId: !Ref AppTierSG
       - IpProtocol: tcp
         FromPort: '22'
         ToPort: '22'
-        CidrIp: 10.0.12.0/28
+        SourceSecurityGroupId: !Ref BastionSG
 #Provision ELB ALB Security Group
   ALBWebTierSG:
     Type: AWS::EC2::SecurityGroup
@@ -339,7 +347,7 @@ Resources:
         FromPort: '443'
         ToPort: '443'
         CidrIp: 0.0.0.0/0
-#Export Bastion, App, and DB Sudbents & SG's to be used in EC2 Stacks
+#Export Bastion, App, DB Subnets & SG's and ALB SG to be used in EC2/ECS Stacks
 Outputs:
   VPC:
     Description: The ID of the VPC

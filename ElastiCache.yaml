@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'   
+Description: >
+    This template deploys ElastiCache Memcached Cluster
+Resources:
+  ElastiCacheCluster:
+    Type: AWS::ElastiCache::CacheCluster
+    Properties:
+      AZMode: cross-az
+      CacheNodeType: cache.t2.micro
+      CacheSubnetGroupName: !Ref ElastiCacheSubnetGroup
+      Engine: memcached
+      NumCacheNodes: 2
+      Tags:
+        - Key: Name
+          Value: AUSYDELASCLUS000
+      VpcSecurityGroupIds:
+        - Fn::ImportValue: DBTierSG
+  ElastiCacheSubnetGroup: 
+    Type: AWS::ElastiCache::SubnetGroup
+    Properties: 
+      Description: ElastiCache Subnet Group for WordPress
+      SubnetIds: 
+        - Fn::ImportValue: DBTierSubnet0Id
+        - Fn::ImportValue: DBTierSubnet1Id
+#Export ElastiCache Cluster Id
+Outputs:
+  AElastiCacheClusterId:
+    Description: The ID of the ElastiCache Cluster
+    Value: !Ref ElastiCacheCluster
+    Export:
+      Name: ElastiCacheClusterId
