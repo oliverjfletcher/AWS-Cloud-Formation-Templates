@@ -21,7 +21,8 @@ Resources:
               ContainerPort: 80
               LoadBalancerName: !Ref ECSELB
           Role: !Ref ECSServiceIAMRole
-          Task Defintion: !Ref ECSTaskDefinition
+          Task Defintion: 
+            Fn::ImportValue: ECSTaskDefinition
 #Create ECS Task Defintion
     ECSTaskDefinition:
         Type: AWS::ECS::TaskDefinition
@@ -30,4 +31,36 @@ Resources:
             Name: Wordpress
             Essential: True
             Image: !Join [ ".", [ !Ref "AWS::AccountId", "dkr.ecr", !Ref "AWS::Region", !Join [ "/", [ "amazonaws.com", !Ref ECRName, :WordpressBuild000 ] ] ] ]
+            PortMappings:
+              HostPort: 80
+              ContainerPort: 80
+          Volumes:
+            Name: ECSVolume000
+#Create Auto Scaling Group for ECS Cluster
+    ECSAutoScalingGroup:
+        Type: AWS::AutoScaling::AutoScalingGroup
+        Properties:
+          VPCZoneIdentifier: [ Fn::ImportValue: AppTierSubnet0Id, Fn::ImportValue: AppTierSubnet1Id ]
+          LaunchConfigurationName: !Ref ContainerInstances
+          MinSize: 4
+          MaxSize: 8
+          DesiredCapacity: 4
+#Create creation policy for Auto Scaling Group
+        CreationPolicy:
+          ResourceSignal:
+            Count: 3
+            Timeout: PT10M
+          AutoScalingCreationPolicy:
+            MinSuccessfulInstancesPercent: 2
+#Create update policy for Auto Scaling Group
+        UpdatePolicy:
+          AutoScalingRollingUpdate:
+            MinInstancesInservice: 1
+            MaxBatchSize: 4
+            PauseTime: PT10M
+            WaitOnResourceSignals: true
+
+
+
+
 
