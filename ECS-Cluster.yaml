@@ -1,14 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 #Define RDS parameters to be used to configure PHP for WP
 Parameters:
-  DBName:
-    Default: wordpressdb
-    Description: The WordPress database name
-    Type: String
-    MinLength: '1'
-    MaxLength: '64'
-    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
-    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
   DBUser:
     NoEcho: 'true'
     Description: The WordPress database admin account username
@@ -46,9 +38,9 @@ Resources:
               ContainerName: Wordpress
               ContainerPort: 80
               LoadBalancerName: 
-                Fn::ImportValue: ApplicationLoadBalancerId
+                - Fn::ImportValue: ApplicationLoadBalancerId
           Role: 
-            Fn::ImportValue: IAM-EC2-ECS-Service-CF
+            - Fn::ImportValue: IAM-EC2-ECS-Service-CF
           Task Defintion: !Ref ECSTaskDefinition
 #Create ECS Task Defintion
     ECSTaskDefinition:
@@ -57,7 +49,10 @@ Resources:
           ContainerDefinitions:
             Name: Wordpress
             Essential: True
-            Image: !Join [ ".", [ !Ref "AWS::AccountId", "dkr.ecr", !Ref "AWS::Region", !Join [ "/", [ "amazonaws.com", !Ref ECRName, :WordpressBuild000 ] ] ] ]
+            Image: !Join 
+              - ":" 
+              - - Fn::ImportValue: ECRURI
+                - WordpressBuild000
             PortMappings:
               HostPort: 0
               ContainerPort: 80
@@ -69,7 +64,10 @@ Resources:
     ECSAutoScalingGroup:
         Type: AWS::AutoScaling::AutoScalingGroup
         Properties:
-          VPCZoneIdentifier: [ Fn::ImportValue: AppTierSubnet0Id, Fn::ImportValue: AppTierSubnet1Id ]
+          VPCZoneIdentifier: !Join 
+                               - "," 
+                               - - Fn::ImportValue: App-Tier-Subnet-0-ID
+                                 - Fn::ImportValue: App-Tier-Subnet-1-ID
           LaunchConfigurationName: !Ref ContainerInstances
           MinSize: 4
           MaxSize: 8
@@ -96,45 +94,12 @@ Resources:
             config:
               commands:
                 01_add_instance_to_cluster: 
-                  command: !Join ["",[ "#!/bin/bash\n" , echo ECS_CLUSTER= , !Ref EcsCluster , >> /etc/ecs/ecs.config ]]
+                  command: !Join ["",[ "#!/bin/bash\n" , "echo ECS_CLUSTER=", !Ref "EcsCluster", ">> /etc/ecs/ecs.config" ]]
               files:
                 /etc/cfn/cfn-hup.conf:
-                  content: !Join ["", [[main], "\n", stack=, !Ref AWS::StackId, "\n", region=, !Ref AWS::Region, "\n"]] 
+                  content: !Join ["", ["[[main]\n", "stack=", !Ref "AWS::StackId", "\n", "region=", !Ref "AWS::Region", "\n"]] 
                   mode: 000400
                   owner: root
                   group: root
                 /etc/cfn/hooks.d/cfn-auto-reloader.conf:
-                  content: !Join ["", [ , "[cfn-auto-reloader-hook]\n", "triggers=post.update\n", "path=Resources.ContainerInstances.Metadata.AWS::CloudFormation::Init\n", "action=/opt/aws/bin/cfn-init -v", --stack, !Ref AWS::StackName, --resource ContainerInstances, --region, !Ref AWS::Region, "\n", "runas=root\n"]]
-                /tmp/create-wp-config:
-                  content: !Join 
-                    - ''
-                    - - |
-                        #!/bin/bash
-                      - >
-                        cp /var/www/html/wordpress/wp-config-sample.php
-                        /var/www/html/wordpress/wp-config.php
-                        - sed -i "s/'database_name_here'/'
-                      - !Ref DBName
-                      - |
-                        '/g" wp-config.php
-                      - sed -i "s/'username_here'/'
-                      - !Ref DBUser
-                      - |
-                        '/g" wp-config.php
-                      - sed -i "s/'password_here'/'
-                      - !Ref DBPassword
-                      - |
-                        '/g" wp-config.php
-                      - sed -i "s/'localhost'/'
-                      - !GetAtt 
-                        - DBInstance
-                        - Endpoint.Address
-                      - |
-                        '/g" wp-config.php
-                  mode: '000500'
-                  owner: root
-                  group: root
-                  commands:
-                  01_configure_wordpress:
-                  command: /tmp/create-wp-config
-                  cwd: /var/www/html/wordpress
+                  content: !Join ["", ["[cfn-auto-reloader-hook]\n", "triggers=post.update\n", "path=Resources.ContainerInstances.Metadata.AWS::CloudFormation::Init\n", "action=/opt/aws/bin/cfn-init -v", "--stack", !Ref "AWS::StackName", "--resource ContainerInstances", "--region", !Ref "AWS::Region", "\n", "runas=root\n"]]

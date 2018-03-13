@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+    This template provisions a RDS CLuster and Cluster Nodes
+Parameters:
+  DatabaseMasterUsername:
+    NoEcho: 'true'
+    Description: The WordPress database admin account username
+    Type: String
+    MinLength: '1'
+    MaxLength: '16'
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
+  DatabaseMasterPassword:
+    NoEcho: 'true'
+    Description: The WordPress database admin account password
+    Type: String
+    MinLength: '8'
+    MaxLength: '41'
+    AllowedPattern: '[a-zA-Z0-9]*'
+    ConstraintDescription: must contain only alphanumeric characters.  
+Resources:
+#Define subnets to be used for RDS Cluster
+  DataSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: RDS Database Subnet Group for WordPress
+      SubnetIds: !Join 
+                   - "," 
+                   - - Fn::ImportValue: DB-Tier-Subnet-0-ID
+                     - Fn::ImportValue: DB-Tier-Subnet-1-ID 
+#Create RDS Cluster
+  DatabaseCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      BackupRetentionPeriod: 30
+      DatabaseName: AUSYDSQLWP000
+      DBSubnetGroupName: 
+      Engine: MySQL
+      MasterUsername: !Ref DatabaseMasterUsername
+      MasterUserPassword: !Ref DatabaseMasterPassword
+      Port: 3306
+      Tags:
+        - Key: Name
+          Value: AUSYDSQLCLUS000
+      VpcSecurityGroupIds:
+      - Fn::ImportValue: DatabaseSecurityGroup
+
+#Create RDS instances
+  DatabaseInstance0:
+    Type: AWS::RDS::DBInstance
+    Properties:
+
+
+
+  DatabaseInstance1:
+    Type: AWS::RDS::DBInstance
+    Properties:
+
+#Export RDS Cluster Endpoint Address 
+Outputs:
+  DatabaseClusterEndpointAddress:
+    Description: The RDS Cluster Endpoint Address
+    Value: !GetAtt DatabaseCluster.Endpoint.Address
+    Export:
+      Name: RDS-Cluster-Endpoint-Address

@@ -22,4 +22,4 @@ Outputs:
     Description: The ID of the CodeCommit Repository
     Value: !Ref ECSCodeCommitRepo
     Export:
-      Name: ECSCodeCommitRepoId
+      Name: ECS-CodeCommit-Repo-Id

@@ -14,18 +14,22 @@ Resources:
         - Key: Name
           Value: AUSYDELASCLUS000
       VpcSecurityGroupIds:
-        - Fn::ImportValue: DBTierSG
+        - Fn::ImportValue: DB-Tier-SG-ID
   ElastiCacheSubnetGroup: 
     Type: AWS::ElastiCache::SubnetGroup
     Properties: 
       Description: ElastiCache Subnet Group for WordPress
       SubnetIds: 
-        - Fn::ImportValue: DBTierSubnet0Id
-        - Fn::ImportValue: DBTierSubnet1Id
+        - Fn::ImportValue: DB-Tier-Subnet-0-ID
+        - Fn::ImportValue: DB-Tier-Subnet-1-ID
 #Export ElastiCache Cluster Id
 Outputs:
-  AElastiCacheClusterId:
+  ElastiCacheClusterId:
     Description: The ID of the ElastiCache Cluster
     Value: !Ref ElastiCacheCluster
     Export:
       Name: ElastiCacheClusterId
+   ElastiCacheClusterEndpointAddress:
+    Value: !GetAtt ElastiCacheCluster.ConfigurationEndpoint.Address
+        Export:
+      Name: ElastiCacheClusterEndpointAddress

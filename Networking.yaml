@@ -353,54 +353,54 @@ Outputs:
     Description: The ID of the VPC
     Value: !Ref VPC
     Export:
-      Name: VPCId
+      Name: VPC-ID
   BastionSubnet0:
     Description: The ID of the Bastion Subnet
     Value: !Ref BastionSubnet0
     Export:
-      Name: BastionSubnet0Id
+      Name: Bastion-Subnet-0-ID
   BastionSubnet1:
     Description: The ID of the Bastion Subnet
     Value: !Ref BastionSubnet1
     Export:
-      Name: !Sub BastionSubnet1Id
+      Name: Bastion-Subnet-1Id
   BastionSG:
     Description: The ID of the Bastion Security Group
     Value: !GetAtt BastionSG.GroupId
     Export:
-      Name: BastionSG
+      Name: Bastion-SG-ID
   AppTierSubnet0:
     Description: The ID of the App TierSubnet
     Value: !Ref AppTierSubnet0
     Export:
-      Name: AppTierSubnet0Id
+      Name: App-Tier-Subnet-0-ID
   AppTierSubnet1:
     Description: The ID of the App Tier Subnet
     Value: !Ref AppTierSubnet1
     Export:
-      Name: !Sub AppTierSubnet1Id
+      Name: App-Tier-Subnet-1Id
   AppTierSG:
     Description: The ID of the App Tier Security Group
     Value: !GetAtt AppTierSG.GroupId
     Export:
-      Name: AppTierSG
+      Name: App-Tier-SG-ID
   DBTierSubnet0:
     Description: The ID of the DB Tier Subnet
     Value: !Ref DBTierSubnet0
     Export:
-      Name: DBTierSubnet0Id
+      Name: DB-Tier-Subnet-0-ID
   DBTierSubnet1:
     Description: The ID of the DB Tier Subnet
     Value: !Ref DBTierSubnet1
     Export:
-      Name: !Sub DBTierSubnet1Id
+      Name: DB-Tier-Subnet-1-ID
   DBTierSG:
     Description: The ID of the DB Tier Security Group
     Value: !GetAtt DBTierSG.GroupId
     Export:
-      Name: DBTierSG
+      Name: DB-Tier-SG-ID
   ALBWebTierSG:
     Description: The ID of the DB Tier Security Group
     Value: !GetAtt ALBWebTierSG.GroupId
     Export:
-      Name: ALBWebTierSG
+      Name: ALB-Web-Tier-SG-ID

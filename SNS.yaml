@@ -22,4 +22,4 @@ Outputs:
     Description: The ARN export for SNS Topic
     Value: !Ref CodeCommitSNSTopic
     Export:
-      Name: CodeCommitSNSTopicARN
+      Name: CodeCommit-SNS-Topic-ARN

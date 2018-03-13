@@ -10,12 +10,12 @@ Outputs:
   ECRName:
     Value: !Ref ECR
     Export:
-      Name: "ECRName"
+      Name: "ECR-Name"
   ECRARN:
     Value: !GetAtt ECR.Arn
     Export:
-      Name: "ECRARN"
+      Name: "ECR-ARN"
   ECRURI:
     Value: !Join [ ".", [ !Ref "AWS::AccountId", "dkr.ecr", !Ref "AWS::Region", !Join [ "/", [ "amazonaws.com", !Ref ECR, ] ] ] ]
     Export:
-      Name: "ECRURI"
+      Name: "ECR-URI"

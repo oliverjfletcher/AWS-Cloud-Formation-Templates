@@ -62,6 +62,6 @@ Resources:
               docker push ${ECRURIImport}:WordpressBuild000
             - 
               ECRNameImport: 
-                Fn::ImportValue: ECRName
+                Fn::ImportValue: ECR-Name
               ECRURIImport: 
-                Fn::ImportValue: ECRURI
+                Fn::ImportValue: ECR-URI

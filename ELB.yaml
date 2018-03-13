@@ -8,13 +8,13 @@ Resources:
     Properties:
       Scheme: internet-facing
       Subnets:
-        Fn::ImportValue: AppTierSubnet0Id
-        Fn::ImportValue: AppTierSubnet1Id
+        - Fn::ImportValue: App-Tier-Subnet-0-ID
+        - Fn::ImportValue: App-Tier-Subnet-1-ID
       LoadBalancerAttributes:
       - Key: idle_timeout.timeout_seconds
         Value: 60
-      SecurityGroups:
-        Fn::ImportValue: ALBWebTierSG
+      SecurityGroups: 
+        - Fn::ImportValue: ALB-Web-Tier-SG-ID
       Tags:
       - Key: Name
         Value: AUSYDELBALB000
@@ -30,8 +30,7 @@ Resources:
       Port: 443
       Protocol: HTTPS
       UnhealthyThresholdCount: 5
-      VpcId:
-      	Fn::ImportValue: VPCId
+      VpcId: !ImportValue VPCId
 #Export Application Load Balancer Id
 Outputs:
   ApplicationLoadBalancerId:
