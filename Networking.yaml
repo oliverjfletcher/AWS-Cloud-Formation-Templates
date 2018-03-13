@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >
-    This template deploys VPC, Internet Gateway, Subnets, NAT Gateways, and Security Groups   
+    This template deploys VPC, Internet Gateway, Subnets, NAT Gateways 
 Resources:
 #Provision VPC, with 10.0.0./16 CIDR and enable DNS support and DNS Hostname support
   VPC:
@@ -213,141 +213,7 @@ Resources:
    Properties:
     RouteTableId: !Ref RoutingTableNATGateway 
     SubnetId: !Ref DBTierSubnet1
-#Provision Bastion Security Group
-  BastionSG:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupName: AUWEBBASTIONSG
-      GroupDescription: Bastion Security Group
-      VpcId: !Ref VPC
-      Tags: 
-        - Key: Name 
-          Value: AUSYDBASSG000
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: '22'
-        ToPort: '22'
-        CidrIp: 0.0.0.0/0
-      SecurityGroupEgress:
-        IpProtocol: "-1"
-        CidrIp: 0.0.0.0/0
-#Provision WebTier Security Group
-  WebTierSG:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupName: AUWEBTIERSG
-      GroupDescription: WebTier Security Group
-      VpcId: !Ref VPC
-      Tags: 
-        - Key: Name 
-          Value: AUSYDWEBSG000
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: '80'
-        ToPort: '80'
-        CidrIp: 0.0.0.0/0
-      - IpProtocol: tcp
-        FromPort: '443'
-        ToPort: '443'
-        CidrIp: 0.0.0.0/0
-      - IpProtocol: tcp
-        FromPort: '80'
-        ToPort: '80'
-        CidrIp: 0.0.0.0/0
-      - IpProtocol: tcp
-        FromPort: '22'
-        ToPort: '22'
-        CidrIp: 10.0.12.0/28
-      SecurityGroupEgress:
-        IpProtocol: "-1"
-        CidrIp: 0.0.0.0/0    
-#Provision AppTier Security Group
-  AppTierSG:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupName: AUAPPTIERSG
-      GroupDescription: AppTier Security Group
-      VpcId: !Ref VPC
-      Tags: 
-        - Key: Name 
-          Value: AUSYDAPPSG000
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: '80'
-        ToPort: '80'
-        SourceSecurityGroupId: !Ref WebTierSG
-      - IpProtocol: tcp
-        FromPort: '443'
-        ToPort: '443'
-        CidrIp: 10.0.0.0/22
-      - IpProtocol: tcp
-        FromPort: '22'
-        ToPort: '22'
-        SourceSecurityGroupId: !Ref BastionSG
-      SecurityGroupEgress:
-      - IpProtocol: tcp
-        FromPort: '80'
-        ToPort: '80'
-        CidrIp: 10.0.8.0/22
-      - IpProtocol: tcp
-        FromPort: '443'
-        ToPort: '443'
-        SourceSecurityGroupId: !Ref DBTierSG
-      - IpProtocol: tcp
-        FromPort: '3306'
-        ToPort: '3306'
-        SourceSecurityGroupId: !Ref DBTierSG
-#Provision DBTier Security Group
-  DBTierSG:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupName: AUDBTIERSG
-      GroupDescription: DBTier Security Group
-      VpcId: !Ref VPC
-      Tags: 
-        - Key: Name 
-          Value: AUSYDDBSG000
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: '80'
-        ToPort: '80'
-        SourceSecurityGroupId: !Ref AppTierSG
-      - IpProtocol: tcp
-        FromPort: '443'
-        ToPort: '443'
-        SourceSecurityGroupId: !Ref AppTierSG
-      - IpProtocol: tcp
-        FromPort: '3306'
-        ToPort: '3306'
-        SourceSecurityGroupId: !Ref AppTierSG
-      - IpProtocol: tcp
-        FromPort: '11211'
-        ToPort: '11211'
-        SourceSecurityGroupId: !Ref AppTierSG
-      - IpProtocol: tcp
-        FromPort: '22'
-        ToPort: '22'
-        SourceSecurityGroupId: !Ref BastionSG
-#Provision ELB ALB Security Group
-  ALBWebTierSG:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupName: AUALBSG
-      GroupDescription: ALB Security Group
-      VpcId: !Ref VPC
-      Tags: 
-        - Key: Name 
-          Value: AUSYDALBSG000
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: '80'
-        ToPort: '80'
-        CidrIp: 0.0.0.0/0
-      - IpProtocol: tcp
-        FromPort: '443'
-        ToPort: '443'
-        CidrIp: 0.0.0.0/0
-#Export Bastion, App, DB Subnets & SG's and ALB SG to be used in EC2/ECS Stacks
+#Export Bastion, App, DB Subnets to be used in EC2/ECS Stacks
 Outputs:
   VPC:
     Description: The ID of the VPC
@@ -364,11 +230,6 @@ Outputs:
     Value: !Ref BastionSubnet1
     Export:
       Name: Bastion-Subnet-1Id
-  BastionSG:
-    Description: The ID of the Bastion Security Group
-    Value: !GetAtt BastionSG.GroupId
-    Export:
-      Name: Bastion-SG-ID
   AppTierSubnet0:
     Description: The ID of the App TierSubnet
     Value: !Ref AppTierSubnet0
@@ -379,11 +240,6 @@ Outputs:
     Value: !Ref AppTierSubnet1
     Export:
       Name: App-Tier-Subnet-1Id
-  AppTierSG:
-    Description: The ID of the App Tier Security Group
-    Value: !GetAtt AppTierSG.GroupId
-    Export:
-      Name: App-Tier-SG-ID
   DBTierSubnet0:
     Description: The ID of the DB Tier Subnet
     Value: !Ref DBTierSubnet0
@@ -394,13 +250,3 @@ Outputs:
     Value: !Ref DBTierSubnet1
     Export:
       Name: DB-Tier-Subnet-1-ID
-  DBTierSG:
-    Description: The ID of the DB Tier Security Group
-    Value: !GetAtt DBTierSG.GroupId
-    Export:
-      Name: DB-Tier-SG-ID
-  ALBWebTierSG:
-    Description: The ID of the DB Tier Security Group
-    Value: !GetAtt ALBWebTierSG.GroupId
-    Export:
-      Name: ALB-Web-Tier-SG-ID

@@ -1,0 +1,169 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+    This template deploys Security Groups   
+Resources:
+#Provision Bastion Security Group
+  BastionSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: AUWEBBASTIONSG
+      GroupDescription: Bastion Security Group
+      VpcId: 
+        Fn::ImportValue: VPC-ID
+      Tags: 
+        - Key: Name 
+          Value: AUSYDBASSG000
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        IpProtocol: "-1"
+        CidrIp: 0.0.0.0/0
+#Provision WebTier Security Group
+  WebTierSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: AUWEBTIERSG
+      GroupDescription: WebTier Security Group
+      VpcId: 
+        Fn::ImportValue: VPC-ID
+      Tags: 
+        - Key: Name 
+          Value: AUSYDWEBSG000
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 10.0.12.0/28
+      SecurityGroupEgress:
+        IpProtocol: "-1"
+        CidrIp: 0.0.0.0/0    
+#Provision AppTier Security Group
+  AppTierSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: AUAPPTIERSG
+      GroupDescription: AppTier Security Group
+      VpcId: 
+        Fn::ImportValue: VPC-ID
+      Tags: 
+        - Key: Name 
+          Value: AUSYDAPPSG000
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 10.0.0.0/22
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: 10.0.0.0/22
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 10.0.12.0/28
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 10.0.8.0/22
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: 10.0.8.0/22
+      - IpProtocol: tcp
+        FromPort: '11211'
+        ToPort: '11211'
+        CidrIp: 10.0.0.0/22 
+      - IpProtocol: tcp
+        FromPort: '3306'
+        ToPort: '3306'
+        CidrIp: 10.0.0.0/22 
+#Provision DBTier Security Group
+  DBTierSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: AUDBTIERSG
+      GroupDescription: DBTier Security Group
+      VpcId: 
+        Fn::ImportValue: VPC-ID
+      Tags: 
+        - Key: Name 
+          Value: AUSYDDBSG000
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 10.0.8.0/22
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: 10.0.8.0/22
+      - IpProtocol: tcp
+        FromPort: '11211'
+        ToPort: '11211'
+        CidrIp: 10.0.8.0/22
+      - IpProtocol: tcp
+        FromPort: '3306'
+        ToPort: '3306'
+        CidrIp: 10.0.8.0/22
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 10.0.12.0/28
+#Provision ELB ALB Security Group
+  ALBWebTierSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: AUALBSG
+      GroupDescription: ALB Security Group
+      VpcId:
+        Fn::ImportValue: VPC-ID
+      Tags: 
+        - Key: Name 
+          Value: AUSYDALBSG000
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '443'
+        ToPort: '443'
+        CidrIp: 0.0.0.0/0
+#Export Bastion, App, DB Security Groups
+Outputs:
+  BastionSG:
+    Description: The ID of the Bastion Security Group
+    Value: !Ref BastionSG
+    Export:
+      Name: Bastion-SG-ID
+  DBTierSG:
+    Description: The ID of the DB Tier Security Group
+    Value: !Ref DBTierSG
+    Export:
+      Name: DB-Tier-SG-ID
+  AppTierSG:
+    Description: The ID of the App Tier Security Group
+    Value: !Ref AppTierSG
+    Export:
+      Name: App-Tier-SG-ID
+  ALBWebTierSG:
+    Description: The ID of the DB Tier Security Group
+    Value: !Ref ALBWebTierSG
+    Export:
+      Name: ALB-Web-Tier-SG-ID
