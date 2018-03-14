@@ -229,7 +229,7 @@ Outputs:
     Description: The ID of the Bastion Subnet
     Value: !Ref BastionSubnet1
     Export:
-      Name: Bastion-Subnet-1Id
+      Name: Bastion-Subnet-1-ID
   AppTierSubnet0:
     Description: The ID of the App TierSubnet
     Value: !Ref AppTierSubnet0
@@ -239,7 +239,7 @@ Outputs:
     Description: The ID of the App Tier Subnet
     Value: !Ref AppTierSubnet1
     Export:
-      Name: App-Tier-Subnet-1Id
+      Name: App-Tier-Subnet-1-ID
   DBTierSubnet0:
     Description: The ID of the DB Tier Subnet
     Value: !Ref DBTierSubnet0

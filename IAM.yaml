@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >
-    This template creates IAM Roles, Managed Policies, and Instance Profile
+    This template creates IAM Roles, Managed Policies, and EC2 Instance Profile
 Resources:  
 #Create EC2 Read-Write Role for S3, ECR and ECS
   IAMRoleEC2CF0:
@@ -17,7 +17,7 @@ Resources:
             Action:
               - sts:AssumeRole
       Path: /
-      RoleName: EC2-S3-ECR-ECS
+      RoleName: EC2-ECR
 #Create EC2 Read-Write Role for ECS service 
   IAMRoleEC2CF1:
     Type: AWS::IAM::Role
@@ -34,29 +34,23 @@ Resources:
               - sts:AssumeRole
       Path: /
       RoleName: EC2-ECS-Service
-#Create EC2 S3 Read-Write Managed Policy
-  IAMManagedPolicyEC2S3WPContentReadWrite:
-    Type: AWS::IAM::ManagedPolicy
-    Properties: 
-      Description: EC2 S3 Managed Read-Write Policy
-      Path: /
-      PolicyDocument:        
+#Create EC2 Read-Write Role for ECS service 
+  IAMRoleEC2CF2:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
           -
-           Effect: Allow
-           Action:
-           - s3:PutObject
-           - s3:GetObject
-           - s3:DeleteObject
-           - s3:RestoreObject
-           - s3:ListBucket
-           - s3:ListObjects
-           Resource: arn:aws:s3:::oliverjamesfletcher-cf-wp
-      Roles:
-      - Ref: IAMRoleEC2CF0
-      ManagedPolicyName: IAMManagedPolicyEC2S3WPContentReadWrite
-#Create IAM EC2 ECR Read-Write Managed Policy
+            Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      RoleName: EC2-ECS-Task
+#Create IAM EC2 ECR Read-Write Managed Policy for Bastion server
   IAMManagedPolicyEC2ECRCF:
     Type: AWS::IAM::ManagedPolicy
     Properties: 
@@ -85,7 +79,7 @@ Resources:
       - Ref: IAMRoleEC2CF0
       ManagedPolicyName: IAMManagedPolicyEC2ECRCF
 #Create IAM EC2 ECS Read-Write Managed Policy
-  IAMManagedPolicyEC2ECRCF:
+  IAMManagedPolicyEC2ECSCF:
     Type: AWS::IAM::ManagedPolicy
     Properties: 
       Description: EC2 ECS Managed Policy
@@ -102,22 +96,15 @@ Resources:
            - ecs:DiscoverPollEndpoint
            - ecs:Submit
            - ecs:Poll
-           Resource: "*"
-      Roles:
-      - Ref: IAMRoleEC2CF0
-      ManagedPolicyName: IAMManagedPolicyEC2ECSCF
-#Create IAM EC2 ECS Service Managed Policy
-  IAMManagedPolicyEC2ECRCF:
-    Type: AWS::IAM::ManagedPolicy
-    Properties: 
-      Description: EC2 ECS Service Managed Policy
-      Path: /
-      PolicyDocument:        
-        Version: 2012-10-17
-        Statement:
-          -
-           Effect: Allow
-           Action:
+           - ecs:RegisterContainerInstance
+           - ecs:StartTelemetrySession
+           - ecs:Submit*
+           - ecr:GetAuthorizationToken
+           - ecr:BatchCheckLayerAvailability
+           - ecr:GetDownloadUrlForLayer
+           - ecr:BatchGetImage
+           - logs:CreateLogStream
+           - logs:PutLogEvents
            - elasticloadbalancing:Describe*
            - elasticloadbalancing:DeregisterInstancesFromLoadBalancer
            - elasticloadbalancing:RegisterInstancesWithLoadBalancer
@@ -126,7 +113,29 @@ Resources:
            Resource: "*"
       Roles:
       - Ref: IAMRoleEC2CF1
-      ManagedPolicyName: IAMManagedPolicyEC2ECSSCF
+      ManagedPolicyName: IAMManagedPolicyEC2ECSCF
+#Create EC2 S3 Read-Write Managed Policy for ECS Tasks
+  IAMManagedPolicyEC2S3WPContentReadWrite:
+    Type: AWS::IAM::ManagedPolicy
+    Properties: 
+      Description: EC2 S3 Managed Read-Write Policy
+      Path: /
+      PolicyDocument:        
+        Version: 2012-10-17
+        Statement:
+          -
+           Effect: Allow
+           Action:
+           - s3:PutObject
+           - s3:GetObject
+           - s3:DeleteObject
+           - s3:RestoreObject
+           - s3:ListBucket
+           - s3:ListObjects
+           Resource: arn:aws:s3:::oliverjamesfletcher-cf-wp
+      Roles:
+      - Ref: IAMRoleEC2CF2
+      ManagedPolicyName: IAMManagedPolicyEC2S3WPContentReadWrite
 #Create EC2 S3 Read-Write Instance Profile
   IAMInstProfileEC2ReadWrite:
     Type: AWS::IAM::InstanceProfile
@@ -142,6 +151,11 @@ Outputs:
     Value: !Ref IAMInstProfileEC2ReadWrite
     Export:
       Name: IAM-EC2-CF-Read-Write
+  IAMRoleEC2CF1ARN:
+    Description: The IAM EC2 ECS Task Read Write Role ARN
+    Value: !GetAtt IAMRoleEC2CF2.Arn
+    Export:
+      Name: IAM-EC2-ECS-Task-ARN
   IAMRoleEC2CF1:
     Description: The name of the IAM EC2 ECS Service Role
     Value: !Ref IAMRoleEC2CF1

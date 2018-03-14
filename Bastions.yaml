@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'   
 Description: >
-    This template deploys two EC2 instances for bastion servers
+    This template deploys two EC2 instances for Bastion servers
 Resources:
 #Provision EC2 Bastion Instance 0
  EC2Bastion0:
@@ -11,12 +11,12 @@ Resources:
       InstanceType: t2.micro
       IamInstanceProfile: EC2-CF-Read-Write
       NetworkInterfaces: 
-        - AssociatePublicIpAddress: true
-          DeviceIndex: 0
+        - AssociatePublicIpAddress: 'true'
+          DeviceIndex: '0'
           GroupSet: 
-            - Fn::ImportValue: BastionSG
+            - Fn::ImportValue: Bastion-SG-ID
           SubnetId:
-            Fn::ImportValue: BastionSubnet0Id
+            Fn::ImportValue: Bastion-Subnet-0-ID
       KeyName: EC2_SSH
       Tags:
       - Key: Name 
@@ -33,12 +33,12 @@ Resources:
       InstanceType: t2.micro
       IamInstanceProfile: EC2-CF-Read-Write
       NetworkInterfaces: 
-        - AssociatePublicIpAddress: true
-          DeviceIndex: 0
+        - AssociatePublicIpAddress: 'true'
+          DeviceIndex: '0'
           GroupSet: 
-            - Fn::ImportValue: BastionSG
+            - Fn::ImportValue: Bastion-SG-ID
           SubnetId: 
-            Fn::ImportValue: BastionSubnet1Id
+            Fn::ImportValue: Bastion-Subnet-1-ID
       KeyName: EC2_SSH
       Tags:
       - Key: Name 
@@ -58,7 +58,7 @@ Resources:
               wget https://s3-ap-southeast-2.amazonaws.com/oliverjamesfletcher-docker/Docker-file
               eval $(aws ecr get-login --region ap-southeast-2 --no-include-email)
               docker build -t ${ECRNameImport}:WordpressBuild000 - < Docker-file
-              docker tag ${ECRNameImport}:WordpressBuild110318 ${ECRURIImport}:WordpressBuild000
+              docker tag ${ECRNameImport}:WordpressBuild000 ${ECRURIImport}:WordpressBuild000
               docker push ${ECRURIImport}:WordpressBuild000
             - 
               ECRNameImport: 

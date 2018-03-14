@@ -37,4 +37,4 @@ Outputs:
     Description: The ID of the ApplicationLoadBalancer
     Value: !Ref ApplicationLoadBalancer
     Export:
-      Name: ApplicationLoadBalancerId
+      Name: Application-LoadBalancer-Id

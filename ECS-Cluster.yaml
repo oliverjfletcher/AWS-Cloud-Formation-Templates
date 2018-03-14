@@ -1,6 +1,22 @@
 AWSTemplateFormatVersion: '2010-09-09'
 #Define RDS parameters to be used to configure PHP for WP
 Parameters:
+  WPAdminUser:
+    NoEcho: 'true'
+    Description: The WordPress admin username
+    Type: String
+    MinLength: '1'
+    MaxLength: '16'
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
+  WPAdminPassword:
+    NoEcho: 'true'
+    Description: The WordPress admin password
+    Type: String
+    MinLength: '8'
+    MaxLength: '41'
+    AllowedPattern: '[a-zA-Z0-9]*'
+    ConstraintDescription: must contain only alphanumeric characters.   
   DBUser:
     NoEcho: 'true'
     Description: The WordPress database admin account username
@@ -37,8 +53,8 @@ Resources:
           LoadBalancers:
               ContainerName: Wordpress
               ContainerPort: 80
-              LoadBalancerName: 
-                - Fn::ImportValue: ApplicationLoadBalancerId
+              LoadBalancerName:
+                Fn::ImportValue: Application-LoadBalancer-Id
           Role: 
             - Fn::ImportValue: IAM-EC2-ECS-Service-CF
           Task Defintion: !Ref ECSTaskDefinition
@@ -49,25 +65,23 @@ Resources:
           ContainerDefinitions:
             Name: Wordpress
             Essential: True
-            Image: !Join 
-              - ":" 
-              - - Fn::ImportValue: ECRURI
-                - WordpressBuild000
+            Image: !Join [":",[ !ImportValue "ECRURI", "WordpressBuild000" ]]
             PortMappings:
-              HostPort: 0
-              ContainerPort: 80
-              HostPort: 0
-              ContainerPort: 443
+              HostPort: "80"
+              ContainerPort: "80"
+              HostPort: "443"
+              ContainerPort: "443"
+            TaskRoleArn:
+              Fn::ImportValue: IAM-EC2-ECS-Task-ARN
           Volumes:
             Name: ECSVolume000
 #Create Auto Scaling Group for ECS Cluster
     ECSAutoScalingGroup:
         Type: AWS::AutoScaling::AutoScalingGroup
         Properties:
-          VPCZoneIdentifier: !Join 
-                               - "," 
-                               - - Fn::ImportValue: App-Tier-Subnet-0-ID
-                                 - Fn::ImportValue: App-Tier-Subnet-1-ID
+          VPCZoneIdentifier: 
+            - Fn::ImportValue: App-Tier-Subnet-0-ID
+            - Fn::ImportValue: App-Tier-Subnet-1-ID
           LaunchConfigurationName: !Ref ContainerInstances
           MinSize: 4
           MaxSize: 8
@@ -95,6 +109,10 @@ Resources:
               commands:
                 01_add_instance_to_cluster: 
                   command: !Join ["",[ "#!/bin/bash\n" , "echo ECS_CLUSTER=", !Ref "EcsCluster", ">> /etc/ecs/ecs.config" ]]
+                install_wp:
+                  command: wp core config --dbname="test" --dbuser="root" --dbpass="Password1!" --dbhost="testhost.com" --dbprefix="wp_" --allow-root
+                configure_wp:
+                  command: wp core install --url="www.oliverjfletcher.net" --title="Oliver James Fletcher" --admin_user='" !Ref WPAdminUsername "' --admin_password='" !Ref WPAdminUsername "' --admin_email="oliverjfletcher-wp@mailinator.com" --skip-email --allow-root\n"
               files:
                 /etc/cfn/cfn-hup.conf:
                   content: !Join ["", ["[[main]\n", "stack=", !Ref "AWS::StackId", "\n", "region=", !Ref "AWS::Region", "\n"]] 

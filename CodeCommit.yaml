@@ -11,7 +11,7 @@ Resources:
       Triggers: 
         - Name: MasterTriggers
           DestinationArn: 
-            Fn::ImportValue: CodeCommitSNSTopicARN
+            Fn::ImportValue: CodeCommit-SNS-Topic-ARN
           Branches: 
           - master
           Events:
