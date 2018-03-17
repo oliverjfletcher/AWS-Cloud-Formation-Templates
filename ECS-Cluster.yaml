@@ -46,7 +46,7 @@ Resources:
         Type: AWS::ECS::Service
         Properties:
           Cluster: Ref! ECSCluster
-          DesiredCount: 4
+          DesiredCount: 2
           Deployment Cofiguration:
             Maximum Percent: 100
             MinimumHealthyPercent: 50
@@ -83,9 +83,9 @@ Resources:
             - Fn::ImportValue: App-Tier-Subnet-0-ID
             - Fn::ImportValue: App-Tier-Subnet-1-ID
           LaunchConfigurationName: !Ref ContainerInstances
-          MinSize: 4
+          MinSize: 2
           MaxSize: 8
-          DesiredCapacity: 4
+          DesiredCapacity: 2
 #Create creation policy for Auto Scaling Group
         CreationPolicy:
           ResourceSignal:
@@ -97,7 +97,7 @@ Resources:
         UpdatePolicy:
           AutoScalingRollingUpdate:
             MinInstancesInservice: 1
-            MaxBatchSize: 4
+            MaxBatchSize: 2
             PauseTime: PT10M
             WaitOnResourceSignals: true
 #Create Auto Scaling Launch Configuration

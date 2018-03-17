@@ -8,7 +8,7 @@ Resources:
       AZMode: cross-az
       CacheNodeType: cache.t2.micro
       CacheSubnetGroupName: !Ref ElastiCacheSubnetGroup
-      Engine: memcached
+      Engine: redis
       NumCacheNodes: 2
       Tags:
         - Key: Name
