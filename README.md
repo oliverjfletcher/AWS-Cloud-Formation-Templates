@@ -1,10 +1,11 @@
 <h1>Architecture Rationale</h1>
 
-These templates were created to demostrate and document an automated deployment using AWS Cloudformation of n-tier architecture, by incorprating knowledge of the below best practices, techniques, concepts, AWS Services and industry standard software.
+These templates were created to demonstrate and document an automated deployment using AWS Cloudformation of n-tier architecture, by incorporating knowledge of the below best practices, standards, concepts, AWS Services and industry standard software & languages.
 
 The desired goal is to automate deployment end to end using AWS Cloudformation so that an engineer to simply input required configuration and stand up an entire enviroment.
 
-This was created as a learning excercise to further my knowledge of AWS Services, DevOps and related industry standard software and programming languages. 
+This was created as a learning excercise to further my knowledge of AWS Services, DevOps and related industry standard software & languages.
+
 
 <a href="https://s3-ap-southeast-2.amazonaws.com/oliverjamesfletcher/GitHub/Oliver+James+Fletcher.png">View Architecture</a>
 
