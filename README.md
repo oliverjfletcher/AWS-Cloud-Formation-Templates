@@ -53,39 +53,39 @@ Note: This is a on-going project, architecture is subject to change.
 <li>Route 53</li>
 <li>Security Groups</li></ul>
 
-<ul style="list-style-type:disc">
 <h3><b>Compute</b></h3>
+<ul style="list-style-type:disc">
 <li>EC2</li>
 <li>AMIs</li>
 <li>Elastic Block Store</li>
 <li>Auto Scaling Groups</li>
 <li>Elastic Container Service<b>(WIP)</b></li></ul>
 
-<ul style="list-style-type:disc">
 <h3><b>Storage</b></h3>
+<ul style="list-style-type:disc">
 <li>S3</li>
 <li>Glacier</li></ul>
 
-<ul style="list-style-type:disc">
 <h3><b>Database</b></h3>
+<ul style="list-style-type:disc">
 <li>RDS</li>
 <li>ElastiCache</li></ul>
 
-<ul style="list-style-type:disc">
 <h3><b>Security, Identity & Compliance</b></h3>
+<ul style="list-style-type:disc">
 <li>IAM</li></ul>
 
-<ul style="list-style-type:disc">
 <h3><b>Application Integration</b></h3>
+<ul style="list-style-type:disc">
 <li>Simple Notification Service<b>(WIP)</b></li></ul>
 
-<ul style="list-style-type:disc">
 <h3><b>Developer Tools</b></h3>
+<ul style="list-style-type:disc">
 <li>CodeCommit</li>
 <li>CodeDeploy<b>(WIP)</b></li></ul>
-
-<ul style="list-style-type:disc">
+ 
 <h3><b>Management Tools</b></h3>
+<ul style="list-style-type:disc">
 <li>CloudWatch<b>(WIP)</b></li>
 <li>CloudFormation</li>
 <li>CloudTrail <b>(WIP)</b></li></ul>
