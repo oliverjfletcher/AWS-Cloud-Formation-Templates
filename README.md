@@ -64,7 +64,7 @@ Note: This is a on-going project, architecture is subject to change.
 <ul style="list-style-type:disc">
 <h3><b>Storage</b></h3>
 <li>S3</li>
-<li>Glacier</li>
+<li>Glacier</li></ul>
 
 <ul style="list-style-type:disc">
 <h3><b>Database</b></h3>
