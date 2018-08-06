@@ -4,7 +4,7 @@ These templates were created to demonstrate and document an automated deployment
 
 The desired goal is to automate deployment end to end using AWS Cloudformation so that an engineer to simply input required configuration and stand up an entire enviroment.
 
-This was created as a learning excercise to further my knowledge of AWS Services, DevOps and related industry standard software & languages.
+This was created as a learning excercise to further my knowledge best practices, standards, concepts, AWS Services and industry standard software & languages.
 
 
 <a href="https://s3-ap-southeast-2.amazonaws.com/oliverjamesfletcher/GitHub/Oliver+James+Fletcher.png">View Architecture</a>
