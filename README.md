@@ -13,6 +13,7 @@ Note: This is a on-going project, architecture is subject to change.
 
 <h2>Best Practices, Standards, Concepts, Software and Languages</h2>
 
+<ul style="list-style-type:disc">
 <h3><b>Standards, Concepts and Best Practices</b></h3>
 <li>Large-scale distributed systems architecture</li>
 <li>Loose coupling and Microservices</li>
@@ -23,15 +24,16 @@ Note: This is a on-going project, architecture is subject to change.
 <li>Disaster Recovery and fail-over strategies</li>
 <li>Eventual consistency</li>
 <li>Database and replication methodologies</li>
-<li>System performance tuning</li>
+<li>System performance tuning</li></ul>
 
+<ul style="list-style-type:disc">
 <h4><b>DevOps</b></h4>
 <li>Automated Deployments & Infra as Code (CloudFormation)</b></li>
 <li>Continous Intergration & Continous Deployment</li>
 <li>Containers (Docker)<b>(WIP)</b></li>
 <li>Container Orchestration (Kubernetes) <b>(R&D/WIP)</b></li>
 <li>Configuration Management (Puppet)<b>(WIP)</b></li>
-<li>Telemetery (CloudWatch)<b>(WIP)</b></li>
+<li>Telemetery (CloudWatch)<b>(WIP)</b></li></ul>
 
 <h2>AWS Services</h2>
 
@@ -49,34 +51,41 @@ Note: This is a on-going project, architecture is subject to change.
 <li>Elastic IPs</li>
 <li>CloudFront</li>
 <li>Route 53</li>
-<li>Security Groups</li>
+<li>Security Groups</li></ul>
 
+<ul style="list-style-type:disc">
 <h3><b>Compute</b></h3>
 <li>EC2</li>
 <li>AMIs</li>
 <li>Elastic Block Store</li>
 <li>Auto Scaling Groups</li>
-<li>Elastic Container Service<b>(WIP)</b></li>
+<li>Elastic Container Service<b>(WIP)</b></li></ul>
 
+<ul style="list-style-type:disc">
 <h3><b>Storage</b></h3>
 <li>S3</li>
 <li>Glacier</li>
 
+<ul style="list-style-type:disc">
 <h3><b>Database</b></h3>
 <li>RDS</li>
-<li>ElastiCache</li>
+<li>ElastiCache</li></ul>
 
+<ul style="list-style-type:disc">
 <h3><b>Security, Identity & Compliance</b></h3>
-<li>IAM</li>
+<li>IAM</li></ul>
 
+<ul style="list-style-type:disc">
 <h3><b>Application Integration</b></h3>
-<li>Simple Notification Service<b>(WIP)</b></li>
+<li>Simple Notification Service<b>(WIP)</b></li></ul>
 
+<ul style="list-style-type:disc">
 <h3><b>Developer Tools</b></h3>
 <li>CodeCommit</li>
-<li>CodeDeploy<b>(WIP)</b></li>
+<li>CodeDeploy<b>(WIP)</b></li></ul>
 
+<ul style="list-style-type:disc">
 <h3><b>Management Tools</b></h3>
 <li>CloudWatch<b>(WIP)</b></li>
 <li>CloudFormation</li>
-<li>CloudTrail <b>(WIP)</b></li>
+<li>CloudTrail <b>(WIP)</b></li></ul>
