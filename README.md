@@ -17,7 +17,8 @@ Note: This is a on-going project, architecture is subject to change.
 <li>Large-scale distributed systems architecture</li>
 <li>Loose coupling and Microservices</li>
 <li>Elasticity and scalability</li>
-<li>Security best practices
+<li>Security best practices</li>
+<li>High Availibility</li>
 <li>Self-healing techniques and fault-tolerant services</li>
 <li>Disaster Recovery and fail-over strategies</li>
 <li>Eventual consistency</li>
