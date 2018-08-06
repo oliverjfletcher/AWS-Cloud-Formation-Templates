@@ -59,7 +59,7 @@ Note: This is a on-going project, architecture is subject to change.
 <li>AMIs</li>
 <li>Elastic Block Store</li>
 <li>Auto Scaling Groups</li>
-<li>Elastic Container Service<b>(WIP)</b></li></ul>
+<li>Elastic Container Service <b> (WIP)</b></li></ul>
 
 <h3><b>Storage</b></h3>
 <ul style="list-style-type:disc">
@@ -82,10 +82,10 @@ Note: This is a on-going project, architecture is subject to change.
 <h3><b>Developer Tools</b></h3>
 <ul style="list-style-type:disc">
 <li>CodeCommit</li>
-<li>CodeDeploy<b>(WIP)</b></li></ul>
+<li>CodeDeploy <b>(WIP)</b></li></ul>
  
 <h3><b>Management Tools</b></h3>
 <ul style="list-style-type:disc">
-<li>CloudWatch<b>(WIP)</b></li>
+<li>CloudWatch <b>(WIP)</b></li>
 <li>CloudFormation</li>
 <li>CloudTrail <b>(WIP)</b></li></ul>
