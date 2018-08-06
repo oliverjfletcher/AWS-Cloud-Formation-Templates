@@ -13,6 +13,7 @@ This was created as a learning excercise to further my knowledge of AWS Services
 
 <b><i>Note: Network connections to be added</i></b>
 
+</br>
 
 <h2>Best Practices, Standards, Concepts, Software and Languages</h2>
 
@@ -49,6 +50,8 @@ This was created as a learning excercise to further my knowledge of AWS Services
 <li>Wordpress</li>
 <li>Docker</li>
 <li>Puppet</li></ul>
+
+</br>
 
 <h2>AWS Services</h2>
 
