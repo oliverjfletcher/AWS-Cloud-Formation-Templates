@@ -9,7 +9,7 @@ This was created as a learning excercise to further my knowledge of AWS Services
 
 <a href="https://s3-ap-southeast-2.amazonaws.com/oliverjamesfletcher/GitHub/Oliver+James+Fletcher.png">View Architecture</a>
 
-Note: This is a on-going project, architecture is subject to change.
+<b><i>Note: This is a on-going project, architecture is subject to change.</i></b>
 
 <h2>Best Practices, Standards, Concepts, Software and Languages</h2>
 
