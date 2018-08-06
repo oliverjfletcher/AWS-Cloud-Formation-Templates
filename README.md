@@ -11,8 +11,6 @@ This was created as a learning excercise to further my knowledge of AWS Services
 
 <b><i>Note: This is a on-going project, architecture is subject to change.</i></b>
 
-</br>
-
 <h2>Best Practices, Standards, Concepts, Software and Languages</h2>
 
 <ul style="list-style-type:disc">
@@ -37,6 +35,7 @@ This was created as a learning excercise to further my knowledge of AWS Services
 <li>Configuration Management (Puppet)<b> (WIP)</b></li>
 <li>Telemetery (CloudWatch)<b> (WIP)</b></li></ul>
 
+<ul style="list-style-type:disc">
 <h4><b>Software & Languages</b></h4>
 <li>Bash</li>
 <li>YAML</li>
@@ -46,7 +45,7 @@ This was created as a learning excercise to further my knowledge of AWS Services
 <li>Memcached</li>
 <li>Wordpress</li>
 <li>Docker</li>
-<li>Puppet</li>
+<li>Puppet</li></ul>
 
 <h2>AWS Services</h2>
 
