@@ -29,11 +29,11 @@ Note: This is a on-going project, architecture is subject to change.
 <ul style="list-style-type:disc">
 <h4><b>DevOps</b></h4>
 <li>Automated Deployments & Infra as Code (CloudFormation)</b></li>
-<li>Continous Intergration & Continous Deployment</li>
-<li>Containers (Docker)<b>(WIP)</b></li>
-<li>Container Orchestration (Kubernetes) <b>(R&D/WIP)</b></li>
-<li>Configuration Management (Puppet)<b>(WIP)</b></li>
-<li>Telemetery (CloudWatch)<b>(WIP)</b></li></ul>
+<li>Continous Intergration & Continous Deployment (S3, CodeCommit, CodeDeploy)</li>
+<li>Containers (Docker)<b> (WIP)</b></li>
+<li>Container Orchestration (Kubernetes) <b> (R&D/WIP)</b></li>
+<li>Configuration Management (Puppet)<b> (WIP)</b></li>
+<li>Telemetery (CloudWatch)<b> (WIP)</b></li></ul>
 
 <h2>AWS Services</h2>
 
@@ -77,7 +77,7 @@ Note: This is a on-going project, architecture is subject to change.
 
 <h3><b>Application Integration</b></h3>
 <ul style="list-style-type:disc">
-<li>Simple Notification Service<b>(WIP)</b></li></ul>
+<li>Simple Notification Service <b>(WIP)</b></li></ul>
 
 <h3><b>Developer Tools</b></h3>
 <ul style="list-style-type:disc">
