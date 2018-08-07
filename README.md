@@ -9,10 +9,10 @@ The desired goal is to automate deployment end to end using AWS Cloudformation s
 <a href="https://s3-ap-southeast-2.amazonaws.com/oliverjamesfletcher/GitHub/AWS-Cloud-Formation-Templates-IAD.png">View Architecture</a>
 
 <h3>Notes</h3>
-<ul style="list-style-type:disc">
-<li><b><i>This is a on-going project, architecture is subject to change.</i></b></li>
-<li><b><i>Network connection lines and data flow lines to be added to architecture</i></b></li>
-<li><b><i>Master CloudFormation template to be created</i></b></li></ul>
+<ol type="1">
+<li>This is a on-going project, architecture is subject to change.</li>
+<li>Network connection lines and data flow lines to be added to architecture.</li>
+<li>Master CloudFormation template to be created.</li></ol>
 
 </br>
 
