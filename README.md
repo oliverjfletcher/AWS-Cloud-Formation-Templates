@@ -1,10 +1,8 @@
 <h1>Executive Summary & Architecture Rationale</h1>
 
-This project was initiated as a learning excercise to further my knowledge of best practices, standards, concepts, AWS Services and industry standard software & languages documented below.
+This project was initiated as a learning excercise to further my knowledge of I.T and AWS best practices, standards, concepts, AWS Services and standard software & languages documented below.
 
 The design decisions were made to demonstrate and document an automated deployment using AWS Cloudformation of n-tier architecture, by incorporating knowledge of the below best practices, standards, concepts, AWS Services and industry standard software & language documented below.
-
-The desired goal is to automate deployment end to end using AWS Cloudformation so that an engineer to simply input configuration and stand up an entire enviroment.
 
 <h2>Architecture</h2>
 
