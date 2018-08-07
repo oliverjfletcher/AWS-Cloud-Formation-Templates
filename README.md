@@ -101,8 +101,8 @@ The desired goal is to automate deployment end to end using AWS Cloudformation s
 <h3><b>Developer Tools</b></h3>
 <ul style="list-style-type:disc">
 <li>CodeCommit</li>
-<li>CodeBuild <b>(WIP)</b></li></ul>
-<li>CodePipeline<b>(WIP)</b></li></ul>
+<li>CodeBuild<b> (WIP)</b></li>
+<li>CodePipeline<b> (WIP)</b></li></ul>
  
 <h3><b>Management Tools</b></h3>
 <ul style="list-style-type:disc">
