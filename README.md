@@ -8,9 +8,10 @@ Information for a majority of arcirectural decsions were obtained using the belo
 
 <h3>Resources</h3>
 <ul style="list-style-type:disc">
-<a href="https://aws.amazon.com/documentation/?nc2=h_ql_d&awsm=ql-5">AWS Documentation<</a>
+<a href="https://aws.amazon.com/documentation/?nc2=h_ql_d&awsm=ql-5">AWS Documentation</a>
 <a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected</a>
-<a href="https://aws.amazon.com/whitepapers/">AWS Whitepapers</a></ul>
+<a href="https://aws.amazon.com/whitepapers/">AWS Whitepapers</a>
+</ul>
 
 <h2>Architecture</h2>
 
