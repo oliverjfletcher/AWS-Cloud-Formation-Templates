@@ -69,7 +69,7 @@ The design decisions were made to demonstrate and document an automated deployme
 <li>Internet Gateway</li>
 <li>Elastic IPs</li>
 <li>CloudFront</li>
-<li>Route 53<b>(WIP)</b></li></ul>
+<li>Route 53<b> (WIP)</b></li></ul>
 <li>Security Groups</li></ul>
 
 <h3><b>Compute</b></h3>
@@ -93,7 +93,7 @@ The design decisions were made to demonstrate and document an automated deployme
 <h3><b>Security, Identity & Compliance</b></h3>
 <ul style="list-style-type:disc">
 <li>IAM</li></ul>
-<li>Certificate Manager<b>(WIP)</b></li></ul>
+<li>Certificate Manager<b> (WIP)</b></li></ul>
 
 <h3><b>Application Integration</b></h3>
 <ul style="list-style-type:disc">
