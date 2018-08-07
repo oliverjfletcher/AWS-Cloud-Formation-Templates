@@ -4,6 +4,14 @@ This project was initiated as a learning excercise to further my knowledge of I.
 
 The design decisions were made to demonstrate and document an automated deployment using AWS Cloudformation of n-tier architecture, by incorporating knowledge of the below best practices, standards, concepts, AWS Services and industry standard software & language documented below.
 
+Information for a majority of arcirectural decsions were obtained using the below resources...
+
+<h3>Resources</h3>
+<ul style="list-style-type:disc">
+<a href="https://aws.amazon.com/documentation/?nc2=h_ql_d&awsm=ql-5">AWS Documentation<</a>
+<a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected</a>
+<a href="https://aws.amazon.com/whitepapers/">AWS Whitepapers</a></ul>
+
 <h2>Architecture</h2>
 
 <a href="https://s3-ap-southeast-2.amazonaws.com/oliverjamesfletcher/GitHub/AWS-Cloud-Formation-Templates-IAD.png">View Architecture</a>
