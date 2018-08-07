@@ -42,6 +42,10 @@ The design decisions were made to demonstrate and document an automated deployme
 
 <ul style="list-style-type:disc">
 <h4><b>Software & Languages</b></h4>
+<li>PHP</li>
+<li>SQL</li>
+<li>HTML</li>
+<li>CSS</li>
 <li>Bash</li>
 <li>YAML</li>
 <li>Linux</li>
