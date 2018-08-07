@@ -10,7 +10,7 @@ The design decisions were made to demonstrate and document an automated deployme
 <li><a href="https://aws.amazon.com/documentation/?nc2=h_ql_d&awsm=ql-5">AWS Documentation</a></li>
 <li><a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected</a></li>
 <li><a href="https://aws.amazon.com/whitepapers/">AWS Whitepapers</a></li>
-</ul>
+<li><a href="https://aws.amazon.com/whitepapers/operational-checklists-for-aws/">AWS Operational Checklists</a></li>
 
 <h2>Architecture</h2>
 
