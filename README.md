@@ -11,7 +11,7 @@ The desired goal is to automate deployment end to end using AWS Cloudformation s
 <h3>Notes</h3>
 <ul style="list-style-type:disc">
 <li><b><i>This is a on-going project, architecture is subject to change.</i></b></li>
-<li><b><i>Network connections to be added to architecture</i></b></li>
+<li><b><i>Network connection lines and data flow lines to be added to architecture</i></b></li>
 <li><b><i>Master CloudFormation template to be created</i></b></li></ul>
 
 </br>
