@@ -41,7 +41,7 @@ The design decisions were made to demonstrate and document an automated deployme
 
 <ul style="list-style-type:disc">
 <h4><b>DevOps</b></h4>
-<li>Automated Deployments & Infra as Code (CloudFormation)</b></li>
+<li>Automated Deployments & Operations As Code (CloudFormation)</b></li>
 <li>Continous Intergration, Continous Deployment and Blue/Green Deployments (S3, CodeCommit, CodeDeploy, CodePipeline, ECS)</li> <b> (R&D/WIP)</b></li>
 <li>Containers (Docker/ECS)<b> (WIP)</b></li>
 <li>Container Orchestration (Kubernetes/EKS) <b> (R&D/WIP)</b></li>
