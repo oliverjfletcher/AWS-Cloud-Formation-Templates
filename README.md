@@ -71,7 +71,7 @@ The design decisions were made to demonstrate and document an automated deployme
 <h3><b>Networking & Content Delivery</b></h3>
 
 <ul style="list-style-type:disc">
-<li>Availability Zone</li>
+<li>Availability Zones</li>
 <li>VPC</li>
 <li>Subnets</li>
 <li>Route Tables</li>
