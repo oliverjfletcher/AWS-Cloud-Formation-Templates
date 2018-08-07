@@ -2,7 +2,7 @@
 
 This project was initiated as a learning excercise to further my knowledge of best practices, standards, concepts, AWS Services and industry standard software & languages.
 
-The Cloudformation templates were created to demonstrate and document an automated deployment using AWS Cloudformation of n-tier architecture, by incorporating knowledge of the below best practices, standards, concepts, AWS Services and industry standard software & languages.
+The design decisions were made to demonstrate and document an automated deployment using AWS Cloudformation of n-tier architecture, by incorporating knowledge of the below best practices, standards, concepts, AWS Services and industry standard software & languages.
 
 The desired goal is to automate deployment end to end using AWS Cloudformation so that an engineer to simply input configuration and stand up an entire enviroment.
 
