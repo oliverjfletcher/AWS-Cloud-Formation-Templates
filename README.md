@@ -20,7 +20,7 @@ The desired goal is to automate deployment end to end using AWS Cloudformation s
 
 <ul style="list-style-type:disc">
 <h3><b>Standards, Concepts and Best Practices</b></h3>
-<li>Large-scale distributed systems architecture</li>
+<li>Distributed systems architecture</li>
 <li>Loose coupling and Microservices</li>
 <li>Elasticity and scalability</li>
 <li>Security best practices</li>
