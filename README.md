@@ -11,7 +11,7 @@ The design decisions were made to demonstrate and document an automated deployme
 <li><a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected</a></li>
 <li><a href="https://aws.amazon.com/whitepapers/">AWS Whitepapers</a></li>
 <li><a href="https://aws.amazon.com/whitepapers/operational-checklists-for-aws/">AWS Operational Checklists</a></li>
-
+</ul>
 <h2>Architecture</h2>
 
 <a href="https://s3-ap-southeast-2.amazonaws.com/oliverjamesfletcher/GitHub/AWS-Cloud-Formation-Templates-IAD.png">View Architecture</a>
