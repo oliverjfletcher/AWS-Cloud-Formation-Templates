@@ -11,7 +11,9 @@ This was created as a learning excercise to further my knowledge of best practic
 
 <b><i>Note: This is a on-going project, architecture is subject to change.</i></b>
 
-<b><i>Note: Network connections to be added</i></b>
+<b><i>Note: Network connections to be added to architecture</i></b>
+
+<b><i>Note: Master CloudFormation template to be created</i></b>
 
 </br>
 
