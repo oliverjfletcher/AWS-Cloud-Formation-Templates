@@ -38,7 +38,7 @@ The design decisions were made to demonstrate and document an automated deployme
 <li>Containers (Docker/ECS)<b> (WIP)</b></li>
 <li>Container Orchestration (Kubernetes/EKS) <b> (R&D/WIP)</b></li>
 <li>Configuration Management (Puppet/OpsWorks)<b> (R&D/WIP)</b></li>
-<li>Telemetery (CloudWatch)<b> (WIP)</b></li></ul>
+<li>Telemetery & Monitoring (CloudWatch & CloudTrail)<b> (WIP)</b></li></ul>
 
 <ul style="list-style-type:disc">
 <h4><b>Software & Languages</b></h4>
