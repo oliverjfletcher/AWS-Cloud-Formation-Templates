@@ -6,7 +6,7 @@ The Cloudformation templates were created to demonstrate and document an automat
 
 The desired goal is to automate deployment end to end using AWS Cloudformation so that an engineer to simply input configuration and stand up an entire enviroment.
 
-<a href="https://s3-ap-southeast-2.amazonaws.com/oliverjamesfletcher/GitHub/Oliver+James+Fletcher.png">View Architecture</a>
+<a href="https://s3-ap-southeast-2.amazonaws.com/oliverjamesfletcher/GitHub/AWS-Cloud-Formation-Templates-IAD.png">View Architecture</a>
 
 <h3>Notes</h3>
 <ul style="list-style-type:disc">
@@ -101,7 +101,8 @@ The desired goal is to automate deployment end to end using AWS Cloudformation s
 <h3><b>Developer Tools</b></h3>
 <ul style="list-style-type:disc">
 <li>CodeCommit</li>
-<li>CodeDeploy <b>(WIP)</b></li></ul>
+<li>CodeBuild <b>(WIP)</b></li></ul>
+<li>CodePipeline<b>(WIP)</b></li></ul>
  
 <h3><b>Management Tools</b></h3>
 <ul style="list-style-type:disc">
