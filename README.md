@@ -6,6 +6,8 @@ The design decisions were made to demonstrate and document an automated deployme
 
 The desired goal is to automate deployment end to end using AWS Cloudformation so that an engineer to simply input configuration and stand up an entire enviroment.
 
+<h2>Architecture<</h2>
+
 <a href="https://s3-ap-southeast-2.amazonaws.com/oliverjamesfletcher/GitHub/AWS-Cloud-Formation-Templates-IAD.png">View Architecture</a>
 
 <h3>Notes</h3>
