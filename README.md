@@ -39,7 +39,7 @@ The desired goal is to automate deployment end to end using AWS Cloudformation s
 <li>Continous Intergration & Continous Deployment (S3, CodeCommit, CodeDeploy, CodePipeline, ECS)</li>
 <li>Containers (Docker/ECS)<b> (WIP)</b></li>
 <li>Container Orchestration (Kubernetes/EKS) <b> (R&D/WIP)</b></li>
-<li>Configuration Management (Puppet)<b> (WIP)</b></li>
+<li>Configuration Management (Puppet/OpsWorks)<b> (R&D/WIP)</b></li>
 <li>Telemetery (CloudWatch)<b> (WIP)</b></li></ul>
 
 <ul style="list-style-type:disc">
