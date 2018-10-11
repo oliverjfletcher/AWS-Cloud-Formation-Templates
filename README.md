@@ -104,7 +104,7 @@ The design decisions were made to demonstrate and document an automated deployme
 
 <h3><b>Security, Identity & Compliance</b></h3>
 <ul style="list-style-type:disc">
-<li>IAM</li></ul>
+<li>IAM</li>
 <li>Certificate Manager<b> (WIP)</b></li></ul>
 
 <h3><b>Application Integration</b></h3>
