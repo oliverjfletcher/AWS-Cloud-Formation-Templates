@@ -1,6 +1,6 @@
 <h1>Executive Summary & Architecture Rationale</h1>
 
-This project was initiated as a learning excercise to further my knowledge of I.T & AWS standards, best pratcies, concepts, standard software, programming languages, and AWS services documented below.
+This project was initiated as a learning excercise to further my knowledge of I.T & AWS standards, best practcies, concepts, standard software, programming languages, and AWS services documented below.
 
 The design decisions were made to demonstrate and document an automated deployment using AWS Cloudformation of n-tier architecture, by incorporating knowledge of the aforementioned.
 
